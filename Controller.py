@@ -25,14 +25,6 @@ class Controller:
 			self.irc[i].connect((connection["server"], connection["port"]))
 			self.write(i, "NICK {0}".format(self.identity["nick"]))
 			self.write(i, "USER {0} * * :{1}".format(self.identity["user"], self.identity["real"]))
-			for channel in connection["channels"]:
-				self.join(i, channel)
-
-	def join(self, connection, channel):
-		self.write(connection, "JOIN {0}".format(channel))
-
-	def leave(self, connection, channel):
-		self.write(connection, "LEAVE {0}".format(channel))
 
 	def sync(self):
 		print("[SEND]")

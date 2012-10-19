@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import time
 from Controller import *
+from Alfred import *
 
 identity = {
 	"nick": "Alfred",
@@ -13,30 +14,33 @@ connections = [
 		"server": "irc.freenode.net",
 		"port": 6667,
 		"ssl": False,
-		"channels": {"##XAMPP"},
+		"channels": ["##XAMPP"],
 	},
 ]
 
 settings = {
 	"encoding": "UTF-8",
 	"sync_frequency": 10,
-	"buffer_size": 4096,
+	"buffer_size": 2048,
 }
 
 last_sync = 0
 read_buffer = []
-IRC = Controller(connections, identity, settings)
+irc = Controller(connections, identity, settings)
+bot = []
+
+for connection in connections:
+	bot.append(Alfred(identity, connection["channels"]))
 
 while True:
-	read_buffer = IRC.read()
+	read_buffer = irc.read()
 
 	for i, connection in enumerate(connections):
 		for line in read_buffer[i]:
-			if (line[:4] == "PING"):
-				IRC.write(i, "PONG{0}".format(line[4:]))
-			if (line.find("PRIVMSG ##XAMPP :AllBot") != -1):
-				IRC.write(i, "PRIVMSG ##XAMPP :Sorry, I'm not ready to respond to you!")
+			bot[i].parse(line)
+			for response in bot[i].response():
+				irc.write(i, response)
 	
 	if (time.clock() - last_sync > 1/settings["sync_frequency"]):
-		IRC.sync()
+		irc.sync()
 		last_sync = time.clock()
