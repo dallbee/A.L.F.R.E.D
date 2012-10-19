@@ -3,9 +3,9 @@ import time
 from Controller import *
 
 identity = {
-	"nick": "AllBot",
-	"user": "AllBot",
-	"real": "dallbee IRCBot",
+	"nick": "Alfred",
+	"user": "Alfred",
+	"real": "Alfred IRCBot",
 }
 
 connections = [
