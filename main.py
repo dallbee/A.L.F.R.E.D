@@ -19,7 +19,7 @@ connections = [
 ]
 
 settings = {
-	"encoding": "UTF-8",
+	"encoding": "ASCII",
 	"sync_frequency": 10,
 	"buffer_size": 2048,
 }

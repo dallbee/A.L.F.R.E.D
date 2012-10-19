@@ -18,12 +18,15 @@ class Alfred:
 			return False
 
 		line = line.split(":", 2)[1:]
+
+		if (len(line) < 2):
+			return False
+
 		parameters = line[0].split(" ")
 		nick = parameters[0].split("!", 0)
 		message = line[1]
 
-		if ("PRIVMSG" in parameters == True):
-			print ("GOT HERE")
+		if (parameters[1] == "PRIVMSG"):
 			self.message(message)
 
 	def response(self):
@@ -42,12 +45,4 @@ class Alfred:
 
 	def message(self, message):
 		if (message[:3] == "SAY"):
-			self.response_buffer.append(message[4:])
-
-
-
-
-
-
-
-
+			self.response_buffer.append("".join(["PRIVMSG ##XAMPP :", message[4:]]))
