@@ -35,19 +35,27 @@ class Controller:
 
 		print("[RECV]")
 		for i, irc in enumerate(self.irc):
-			self.rx[i] = irc.recv(self.settings["buffer_size"]).decode(self.settings["encoding"])
+			end = False
+			rx_buffer = []
+			while (not end):
+				received = irc.recv(self.settings["buffer_size"]).decode(self.settings["encoding"])
+				rx_buffer.append(received)
+				if (not received or received[-2:] == "\n"):
+					end = True
+
+			self.rx[i] = "".join(rx_buffer)
 			print(self.rx[i])
 
 	def read(self):
 		read_buffer = []
 		for i, connection in enumerate(self.connections):
 			read_buffer.append(self.rx[i].split('\n'))
-			self.rx[i] = "0"
+			self.rx[i] = ""
 
 		return read_buffer
 
 	def write(self, connection, message):
-		self.tx[connection] = ''.join([self.tx[connection], message, "\r\n"])
+		self.tx[connection] = "".join([self.tx[connection], message, "\r\n"])
 
 
 
