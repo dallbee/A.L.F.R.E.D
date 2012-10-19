@@ -19,7 +19,7 @@ connections = [
 ]
 
 settings = {
-	"encoding": "ASCII",
+	"encoding": "UTF-8",
 	"sync_frequency": 10,
 	"buffer_size": 2048,
 }
@@ -37,7 +37,8 @@ while True:
 
 	for i, connection in enumerate(connections):
 		for line in read_buffer[i]:
-			bot[i].parse(line)
+			if (line):
+				bot[i].parse(line)
 			for response in bot[i].response():
 				irc.write(i, response)
 	

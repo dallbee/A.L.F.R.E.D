@@ -40,8 +40,7 @@ class Controller:
 			while (not end):
 				received = irc.recv(self.settings["buffer_size"]).decode(self.settings["encoding"])
 				rx_buffer.append(received)
-				print (received)
-				if (not received or received[-1:] == "\n"):
+				if (not received or received[-2:] == "\r\n"):
 					end = True
 
 			self.rx[i] = "".join(rx_buffer)

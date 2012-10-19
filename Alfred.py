@@ -11,7 +11,7 @@ class Alfred:
 
 
 	def parse(self, line):
-		if (line[4:0] == "PING"):
+		if (line[0:4] == "PING"):
 			self.ping(line[:5])
 			return True
 		if (line.find(":") != 0):
